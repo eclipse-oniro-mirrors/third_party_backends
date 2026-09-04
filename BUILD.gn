@@ -105,7 +105,6 @@ config("backends_private_config") {
     "-O2",
     "-fPIC",
     "-DPIC",
-    "-D_FORTIFY_SOURCE=2",
     "-D_REENTRANT",
     "-DHAVE_CONFIG_H",
     "-fstack-protector-all",
