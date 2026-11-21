@@ -45,6 +45,7 @@ def apply_patch(source_dir):
         'add_thread_poll.patch',
         'hilog_debug.patch',
         'modify_load_function.patch',
+        'tls_cert_status.patch',
     ]
 
     for patch in patch_list:

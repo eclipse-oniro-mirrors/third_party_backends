@@ -1,0 +1,38 @@
+diff --git a/backend/sane_strstatus.c b/backend/sane_strstatus.c
+index fb3c17051..74cb64e7f 100644
+--- a/backend/sane_strstatus.c
++++ b/backend/sane_strstatus.c
+@@ -51,6 +51,15 @@ sane_strstatus (SANE_Status status)
+ {
+   static char buf[80];
+ 
++#ifdef SANE_STATUS_TLS_CERT_CHANGED
++  /* 100 is an OpenHarmony extension outside the SANE_Status enum, so it
++   * cannot be a switch case without tripping -Wswitch (-Werror). Handle it
++   * before the switch instead. */
++  if ((int) status == SANE_STATUS_TLS_CERT_CHANGED) {
++    return SANE_I18N("TLS certificate changed (TOFU check failed)");
++  }
++#endif
++
+   switch (status)
+     {
+     case SANE_STATUS_GOOD:
+diff --git a/include/sane/sane.h b/include/sane/sane.h
+index 494ee891b..7e1a4b4da 100644
+--- a/include/sane/sane.h
++++ b/include/sane/sane.h
+@@ -76,6 +76,13 @@ SANE_Status;
+ #define SANE_STATUS_HW_LOCKED  13 /* scanner mechanism locked for transport */
+ #endif
+ 
++/* OpenHarmony extension (not in the SANE standard): TOFU certificate
++ * mismatch. All other TLS/HTTPS failures stay SANE_STATUS_IO_ERROR.
++ * Value 100 is outside the standard range; #define avoids -Wswitch. */
++#ifndef SANE_STATUS_TLS_CERT_CHANGED
++#define SANE_STATUS_TLS_CERT_CHANGED 100
++#endif
++
+ typedef enum
+   {
+     SANE_TYPE_BOOL = 0,
