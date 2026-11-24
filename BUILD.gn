@@ -107,6 +107,7 @@ config("backends_private_config") {
     "-DPIC",
     "-D_REENTRANT",
     "-DHAVE_CONFIG_H",
+    "-fstack-protector-all",
     "-Wno-format",
     "-Wno-unused-const-variable",
     "-Wno-unused-variable",
